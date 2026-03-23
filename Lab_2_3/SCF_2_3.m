@@ -138,9 +138,10 @@ title("Skok A=-2")
 xlabel("Czas t")
 grid on
 
-b_vals = [0, 500, 1000, 5000, 10000, 50000];
+b_vals = [0, 50, 100, 500, 1000, 10000, 50000, 100000];
 colors = turbo(length(b_vals));
 
+z3.t = 0:0.001:3;
 % --- Impuls vs b
 nexttile
 hold on
@@ -154,15 +155,16 @@ for i = 1:length(b_vals)
 
     z3.sys = tf(z3.sys_num, z3.sys_den);
 
-    plot(z3.t, impulse(z3.sys, z3.t, RespConfig("Amplitude",4)), "LineWidth",1, 'Color',colors(i,:))
+    plot(z3.t, impulse(z3.sys, z3.t, RespConfig("Amplitude",4)), "LineWidth",1, ...
+        'Color',colors(i,:), 'DisplayName',sprintf("b=%d", z3.b))
 end
 title("Impuls A=4 - wpływ b")
 xlabel("Czas t")
 grid on
-legend("b=0","b=5*10^2","b=10^3","b=5*10^3","b=10^4","b=5*10^4",'Location', 'southoutside', 'Orientation', 'horizontal')
+legend('Location','southoutside', 'Orientation','horizontal', 'NumColumns',4)
 
 z3.b = 10000;
-k2_vals = [1];%[0, 1000, 10000, 50000, 100000, 500000];
+k2_vals = [0, 50, 100, 500, 1000, 10000, 50000, 100000];
 colors = turbo(length(k2_vals));
 
 % --- Impuls vs k2
@@ -178,9 +180,10 @@ for i = 1:length(k2_vals)
 
     z3.sys = tf(z3.sys_num, z3.sys_den);
 
-    plot(z3.t, impulse(z3.sys, z3.t, RespConfig("Amplitude",4)), "LineWidth",1, 'Color',colors(i,:))
+    plot(z3.t, impulse(z3.sys, z3.t, RespConfig("Amplitude",4)), "LineWidth",1, ...
+        'Color',colors(i,:), 'DisplayName',sprintf("k_2=%d",z3.k2))
 end
 title("Impuls A=4 - wpływ k_2")
 xlabel("Czas t")
 grid on
-legend("k_2=0","k_2=10^3","k_2=10^4","k_2=5*10^4","k_2=10^5","k_2=5*10^5",'Location', 'southoutside', 'Orientation', 'horizontal')
+legend('Location','southoutside', 'Orientation','horizontal', 'NumColumns',4)
