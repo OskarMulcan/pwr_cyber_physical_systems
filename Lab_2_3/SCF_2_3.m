@@ -187,3 +187,106 @@ title("Impuls A=4 - wpływ k_2")
 xlabel("Czas t")
 grid on
 legend('Location','southoutside', 'Orientation','horizontal', 'NumColumns',4)
+
+% --- Wyznaczanie optymalnych wartości parametru b (ITAE)
+m1_val = 150; m2_val = 1500; k1_val = 200000; k2_val = 48000;
+t = 0:0.01:10;
+b_range = 10:50:50000;
+costs = zeros(size(b_range));
+
+for i = 1:length(b_range)
+    b_val = b_range(i);
+    
+    den = [m1_val*m2_val, ...
+           b_val*(m1_val + m2_val), ...
+           (k1_val*m2_val + k2_val*m1_val + k2_val*m2_val), ...
+           b_val*k1_val, ...
+           k1_val*k2_val];
+       
+    num = [b_val*k1_val, k1_val*k2_val];
+    
+    sys = tf(num, den);
+    [y, t_out] = impulse(sys, t);
+    y = y * 4;
+    
+    costs(i) = trapz(t_out, t_out(:) .* abs(y(:)));
+end
+
+% --- Znalezienie minimum ITAE
+[min_cost, idx] = min(costs);
+best_b = b_range(idx);
+
+figure('Name', 'Optymalizacja ITAE', 'Position', [100, 100, 1400, 500]);
+tl = tiledlayout(1,2, 'TileSpacing','compact','Padding','compact');
+title(tl, 'Optymalizacja parametru b według kryterium ITAE');
+
+nexttile
+plot(b_range, costs, 'LineWidth', 2, 'Color', [0 0.4470 0.7410]);
+hold on;
+plot(best_b, min_cost, 'ro', 'MarkerSize', 10, 'LineWidth', 2, 'MarkerFaceColor', 'r');
+title(['Funkcja kosztu (Minimum przy b = ', num2str(best_b), ')']);
+xlabel('Wartość parametru b'); ylabel('Koszt (ITAE)');
+grid on;
+text(best_b, min_cost, ['  b_{opt}=' num2str(best_b)], 'VerticalAlignment', 'bottom');
+
+nexttile
+num_opt = [best_b*k1_val, k1_val*k2_val];
+den_opt = [m1_val*m2_val, best_b*(m1_val+m2_val), (k1_val*m2_val + k2_val*m1_val + k2_val*m2_val), best_b*k1_val, k1_val*k2_val];
+sys_opt = tf(num_opt, den_opt);
+
+[y_opt, t_opt] = impulse(sys_opt, t);
+plot(t_opt, y_opt*4, 'Color', [0.4660 0.6740 0.1880], 'LineWidth', 2);
+title(['Odpowiedź impulsu (A=4) dla b_{opt} = ', num2str(best_b)]);
+xlabel('Czas t [s]'); ylabel('y(t)');
+grid on;
+
+% --- Wyznaczanie optymalnych wartości parametru b (ISE)
+m1_val = 150; m2_val = 1500; k1_val = 200000; k2_val = 48000;
+t = 0:0.01:10; 
+b_range = 10:50:50000; 
+costs_ise = zeros(size(b_range)); 
+
+for i = 1:length(b_range)
+    b_val = b_range(i);
+    den = [m1_val*m2_val, ...
+           b_val*(m1_val + m2_val), ...
+           (k1_val*m2_val + k2_val*m1_val + k2_val*m2_val), ...
+           b_val*k1_val, ...
+           k1_val*k2_val];
+       
+    num = [b_val*k1_val, k1_val*k2_val]; 
+    sys = tf(num, den);
+    [y, t_out] = impulse(sys, t);
+    y = y * 4; 
+    
+    costs_ise(i) = trapz(t_out, y(:).^2);
+end
+
+% --- Znalezienie minimum ISE
+[min_cost_ise, idx_ise] = min(costs_ise);
+best_b_ise = b_range(idx_ise);
+
+figure('Name', 'Optymalizacja ISE', 'Position', [100, 100, 1400, 500]);
+tlo = tiledlayout(1,2, 'TileSpacing','compact','Padding','compact');
+title(tlo, 'Optymalizacja parametru b według kryterium ISE');
+
+nexttile
+plot(b_range, costs_ise, 'LineWidth', 2, 'Color', [0 0.4470 0.7410]);
+hold on;
+plot(best_b_ise, min_cost_ise, 'ro', 'MarkerSize', 10, 'LineWidth', 2, 'MarkerFaceColor', 'r');
+title(['Funkcja kosztu ISE (Minimum przy b = ', num2str(best_b_ise), ')']);
+xlabel('Wartość parametru b'); ylabel('Koszt (ISE)');
+grid on;
+text(best_b, min_cost, ['  b_{opt}=' num2str(best_b_ise)], 'VerticalAlignment', 'bottom');
+
+
+nexttile
+num_opt_ise = [best_b_ise*k1_val, k1_val*k2_val];
+den_opt_ise = [m1_val*m2_val, best_b_ise*(m1_val+m2_val), (k1_val*m2_val + k2_val*m1_val + k2_val*m2_val), best_b_ise*k1_val, k1_val*k2_val];
+sys_opt_ise = tf(num_opt_ise, den_opt_ise);
+
+[y_opt_ise, t_opt_ise] = impulse(sys_opt_ise, t);
+plot(t_opt_ise, y_opt_ise*4, 'Color', [0.4660 0.6740 0.1880], 'LineWidth', 2);
+title(['Odpowiedź impulsu (A=4) dla b_{opt} = ', num2str(best_b_ise)]);
+xlabel('Czas t [s]'); ylabel('y(t) [m]');
+grid on;
