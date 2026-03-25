@@ -1,0 +1,52 @@
+%{
+Systemy Cyber-Fizyczne - Laboratorium 4 i 5
+Analiza modeli fizycznych w kontekście własności w przestrzeni fazowej
+Przestrzeń fazowa a właściwości obiektów - wybrane modele obiektów
+%}
+
+close all; clc; clear;
+
+% Zadanie #1
+zad1.dot_x = @(t, x) 3 * exp(-t);
+zad1.t = 0:0.1:5;
+zad1.x_0 = 0;
+[zad1.t, zad1.x] = ode45(zad1.dot_x, zad1.t, zad1.x_0);
+
+figure
+plot(zad1.t, zad1.x);
+
+% Zadanie #2
+zad2.dot_x = @(t, x) [x(2); -x(2) + 4*x(1) + sin(10*t)];
+zad2.t = 0:0.1:5;
+zad2.x_0 = [0; 0];
+[zad2.t, zad2.x] = ode45(zad2.dot_x, zad2.t, zad2.x_0);
+
+figure
+plot(zad2.t, zad2.x(:,1));
+
+% Zadanie #3
+function zad3_phase_portrait(A, T, quiver_range_x1, quiver_range_x2, traj_range_x1, traj_range_x2)
+    dot_x = @(t, x) A * x;
+    t = 0:0.01:T;
+
+    [tmp1, tmp2] = meshgrid(quiver_range_x1, quiver_range_x2);
+    x_0 = [tmp1(:), tmp2(:)];
+    dot_x_0 = (dot_x(t,x_0'))';
+
+    figure
+    quiver(x_0(:,1), x_0(:,2), dot_x_0(:,1), dot_x_0(:,2))
+    hold on
+
+    [tmp1, tmp2] = meshgrid(traj_range_x1, traj_range_x2);
+    x_0_traj = [tmp1(:), tmp2(:)];
+
+    for traj_x_0 = x_0_traj'
+        [~, traj] = ode45(dot_x, t, x_0);
+        plot(traj(:,1), traj(:,2));
+    end
+
+    xlim([min(quiver_range_x1) max(quiver_range_x2)]);
+    ylim([min(quiver_range_x2) max(quiver_range_x2)]);
+    xlabel('x_1'); ylabel('x_2');
+    grid on;
+end

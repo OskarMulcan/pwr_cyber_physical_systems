@@ -1,5 +1,5 @@
 %{
-Systemy Cyber-Fizyczne - Laboratorium 1
+Systemy Cyber-Fizyczne - Laboratorium 2 i 3
 Elementy mechaniki klasycznej w modelowaniu układów mechanicznych
 %}
 
