@@ -52,12 +52,12 @@ zad1.c = 5;
 
 zad1.h_forloop = h_xt_forloop(zad1.x, zad1.t, zad1.c);
 
-points = zeros(length(zad1.t), length(zad1.x), 2);
-points(:, :, 1) = repmat(zad1.x, length(zad1.t), 1); % x stałe dla każdego t
-points(:, :, 2) = zad1.h_forloop';
+zad1.points = zeros(length(zad1.t), length(zad1.x), 2);
+zad1.points(:, :, 1) = repmat(zad1.x, length(zad1.t), 1); % x stałe dla każdego t
+zad1.points(:, :, 2) = zad1.h_forloop';
 
 %% Zadanie 1 - animacja
-animate_2d(zad1.t, points, 'x', 'h(x,t)', 'Struna gitarowa');
+animate_2d(zad1.t, zad1.points, 'x', 'h(x,t)', 'Struna gitarowa');
 
 %% Funkcje
 function animate_2d(t, points, x_label, y_label, title_str)
