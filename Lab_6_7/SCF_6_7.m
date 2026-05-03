@@ -27,6 +27,12 @@ zad1.points = zeros(length(zad1.t), length(zad1.x), 2);
 zad1.points(:, :, 1) = repmat(zad1.x, length(zad1.t), 1);
 zad1.points(:, :, 2) = zad1.h';
 
+%% Porównanie wydajności w zadaniu 1
+zad1.forloop_xtime = timeit(@() zad1_h_xt_forloop(zad1.x, zad1.t, zad1.c));
+zad1.vector_xtime = timeit(@() h_xt_vector(zad1.x, zad1.t, zad1.c, zad1.initial, zad1.bc_left, zad1.bc_right, 'dirichlet'));
+fprintf("For-loop time: %f s\n", zad1.forloop_xtime);
+fprintf("Vector time:   %f s\n", zad1.vector_xtime);
+
 %% Animacja zadania 1
 animate_2d(zad1.t, zad1.points, 'x', 'h(x,t)', 'Struna gitarowa');
 
