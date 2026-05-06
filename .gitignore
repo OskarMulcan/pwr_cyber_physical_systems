@@ -1,3 +1,6 @@
 .DS_Store
 *.asv
-*.pdf#
+*.slxc
+.~lock*
+slprj
+
