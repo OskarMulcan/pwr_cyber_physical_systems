@@ -8,7 +8,7 @@ close all; clc; clear;
 %% Plots
 params.x0_vector = [0.01, 0.1, 0.3, 0.301, 0.5, 0.699, 0.7, 0.9, 0.99];
 params.m = 30;
-plot_logistic_equation(params.m, 1, params.x0_vector);
+plot_logistic_equation(params.m, 0.9, params.x0_vector);
 plot_logistic_equation(params.m, 1.5, params.x0_vector);
 plot_logistic_equation(params.m, 2.8, params.x0_vector);
 plot_logistic_equation(params.m, 3.4, params.x0_vector);
