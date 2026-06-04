@@ -14,8 +14,10 @@ plot_logistic_equation(params.m, 2.8, params.x0_vector);
 plot_logistic_equation(params.m, 3.4, params.x0_vector);
 plot_logistic_equation(params.m, 3.6, params.x0_vector);
 
-plot_le_bifurcation_diagram(0:0.005:4, 0:0.005:1, 250, 150);
-plot_le_bifurcation_diagram(3.5:0.001:4, 0:0.005:1, 250, 150);
+params.x0_step = 0.002;
+params.x0_values = params.x0_step:params.x0_step:1-params.x0_step;
+plot_le_bifurcation_diagram(0:0.005:4, params.x0_values, 200, 150);
+plot_le_bifurcation_diagram(3.5:0.001:4, params.x0_values, 200, 150);
 
 %% Functions
 function [out] = logistic_equation(m, alpha, x0)
