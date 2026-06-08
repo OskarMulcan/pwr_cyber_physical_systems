@@ -108,3 +108,37 @@ function [] = plot_le_bifurcation_diagram(alpha_vector, x0_vector, m_stabilizati
 
     hold off;
 end
+
+alpha_values = 0:0.005:4;
+n_transient = 1000;
+n_iterations = 500;
+lambda = zeros(size(alpha_values));
+
+for i = 1:length(alpha_values)
+    a = alpha_values(i);
+    x = 0.5;
+
+    for j = 1:n_transient
+        x = a * x * (1 - x);
+    end
+    
+    sum_log = 0;
+    for j = 1:n_iterations
+        deriv = abs(a * (1 - 2 * x));
+        sum_log = sum_log + log(deriv);
+        
+        x = a * x * (1 - x);
+    end
+    
+    lambda(i) = sum_log / n_iterations;
+end
+
+figure;
+plot(alpha_values, lambda, 'k', 'LineWidth', 0.5);
+hold on;
+yline(0, 'r--', 'LineWidth', 1.5);
+xlabel('\alpha');
+ylabel('\lambda');
+title('Wykładnik Lapunowa dla odwzorowania logistycznego');
+grid on;
+ylim([-2 1]);
