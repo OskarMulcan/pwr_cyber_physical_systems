@@ -13,7 +13,7 @@ x_in = linspace(0, 100, 500);
 y_actual = f(x_in);
 plot(x_in, y_actual, '-', 'LineWidth', 2); 
 hold on; 
-ą
+
 x_points = {2, 3}
 for x_0 = x_points
     y_lin = taylor(f(x), x, 'ExpansionPoint', x_0, 'Order', 2); 
