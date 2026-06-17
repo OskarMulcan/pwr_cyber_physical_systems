@@ -63,7 +63,7 @@ end
 syms x;  
 figure; 
 
-x_in = linspace(0, 100, 500); 
+x_in = linspace(-100, 100, 500); 
 
 y_actual = f(x_in);
 plot(x_in, y_actual, '-', 'LineWidth', 2); 
@@ -74,7 +74,7 @@ for x_0 = x_points
     y_lin = taylor(f(x), x, 'ExpansionPoint', x_0, 'Order', 2); 
     y_lin_func = matlabFunction(y_lin);
     
-    y_lin_out = y_lin_func(x_in); 
+    y_lin_out = y_lin_func(x_in); 22
     
     plot(x_in, y_lin_out, '--');
 end 
